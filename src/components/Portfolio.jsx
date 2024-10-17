@@ -237,6 +237,7 @@ const AnimatedProfilePicture = () => (
 
 const Portfolio = () => {
     const [activeSection, setActiveSection] = useState('home');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
   
     const projects = [
       {
@@ -265,18 +266,29 @@ const Portfolio = () => {
     { skill: "Java", level: 85 },
     { skill: "MongoDB", level: 70 }
   ];
-
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       <nav className="bg-gray-800 p-4">
-        <div className="container mx-auto flex justify-between items-center flex-wrap">
+        <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-blue-400">Aman Jaiswal</h1>
-          <div className="flex space-x-2 lg:space-x-6">
+          <div className="lg:hidden">
+            <button onClick={toggleMenu} className="text-white">
+              {isMenuOpen ? 'Close' : 'Menu'}
+            </button>
+          </div>
+          <div className={`lg:flex space-y-2 lg:space-y-0 lg:space-x-6 ${isMenuOpen ? 'block' : 'hidden'}`}>
             {['home', 'experience', 'projects', 'skills', 'achievements', 'contact'].map((section) => (
               <button
                 key={section}
-                onClick={() => setActiveSection(section)}
-                className={`text-sm ${activeSection === section ? 'text-blue-400' : 'text-gray-300'} hover:text-blue-300`}
+                onClick={() => {
+                  setActiveSection(section);
+                  setIsMenuOpen(false);
+                }}
+                className={`block lg:inline-block text-sm ${activeSection === section ? 'text-blue-400' : 'text-gray-300'} hover:text-blue-300`}
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
               </button>
@@ -289,18 +301,18 @@ const Portfolio = () => {
         {activeSection === 'home' && (
           <div className='relative'>
             <AnimatedProfilePicture />
-            <h2 className="text-4xl font-bold mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-center">
               <TypewriterEffect text="Hello, I'm Aman Jaiswal" />
             </h2>
-            <p className="text-xl mb-6">Aspiring Software Engineer | Full Stack Developer | Problem Solver</p>
+            <p className="text-lg lg:text-xl mb-6 text-center">Aspiring Software Engineer | Full Stack Developer | Problem Solver</p>
             <div className="flex justify-center mb-6">
               <ResumeDownload />
             </div>
             <SocialMediaLinks />
-            {/* <div className='absolute right-20 top-20'> */}
-            <LearningJourneyChart/>
-            {/* </div> */}
-2            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mb-8">
+              <LearningJourneyChart />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-2xl font-bold mb-4">Education</h3>
                 <div className="bg-gray-800 p-4 rounded-lg">
@@ -308,7 +320,9 @@ const Portfolio = () => {
                   <p className="text-gray-300">CMR University, Bangalore</p>
                   <p className="text-gray-300">11/2021 - 06/2025 | CGPA: 8.42</p>
                 </div>
-                <CodeSnippet/>
+                <div className="mt-4">
+                  <CodeSnippet />
+                </div>
               </div>
               <div>
                 <h3 className="text-2xl font-bold mb-4">LeetCode Progress</h3>
@@ -361,7 +375,7 @@ const Portfolio = () => {
         {activeSection === 'achievements' && (
           <div>
             <h2 className="text-3xl font-bold mb-6">Achievements & Certifications</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <ExperienceCard 
                 title="LeetCode"
                 company=""
@@ -390,10 +404,11 @@ const Portfolio = () => {
             </div>
           </div>
         )}
+
         {activeSection === 'contact' && (
           <div>
             <h2 className="text-3xl font-bold mb-6">Contact Me</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-xl font-semibold mb-4">Get in Touch</h3>
                 <ContactForm />
@@ -410,5 +425,4 @@ const Portfolio = () => {
     </div>
   );
 };
-
 export default Portfolio;
